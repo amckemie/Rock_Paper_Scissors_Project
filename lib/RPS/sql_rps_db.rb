@@ -18,21 +18,30 @@ class RPS::DB
     build_user(data)
   end
 
-  def get_user(id)
-    user = @db.execute("select * from users where id='#{id}';").flatten
+  def get_user(name)
+    user = @db.execute("select * from users where name='#{name}';").flatten
     hash = {:id => user[0], :name => user[1], :password => user[2]}
     build_user(hash)
   end
 
-  def update_user(id, data)
+  def update_user(name, data)
     data.each do |key, value|
-      @db.execute("update users set '#{key}' = '#{value}' where id='#{id}';")
+      @db.execute("update users set '#{key}' = '#{value}' where name='#{name}';")
     end
-    get_user(id)
+    get_user(name)
+  end
+
+  def remove_user(name)
+    @db.execute("delete from users where name='#{name}';")
   end
 
   def build_user(data)
     RPS::Users.new(data[:id], data[:name], data[:password])
+  end
+
+  # testing helper method
+  def clear_table(table_name)
+    @db.execute("delete from '#{table_name}';")
   end
 end
 

@@ -8,5 +8,6 @@ require_relative './rps/users.rb'
 require_relative './rps/games.rb'
 require_relative './rps/matches.rb'
 require_relative './rps/invites.rb'
+require_relative './commands/users_cmd.rb'
 
 

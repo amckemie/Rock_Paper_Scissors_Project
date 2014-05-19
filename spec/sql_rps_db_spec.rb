@@ -17,18 +17,20 @@ describe 'db' do
 
   # testing users
   describe 'users' do
+    before(:each) do
+      RPS.db.clear_table("users")
+    end
+
     let(:user1) {RPS.db.create_user(:name => "Ashley", :password => "abc")}
 
     it "creates a user with unique username and password" do
-      user1
       expect(user1.name).to eq("Ashley")
       expect(user1.password).to eq("abc")
       expect(user1.id).to be_a(Fixnum)
     end
 
     it "returns a User object" do
-      user1
-      user = RPS.db.get_user(user1.id)
+      user = RPS.db.get_user(user1.name)
       expect(user).to be_a(RPS::Users)
       expect(user.name).to eq("Ashley")
       expect(user.password).to eq("abc")
@@ -36,11 +38,14 @@ describe 'db' do
     end
 
     it "updates a user's information" do
-      user1
-      user = RPS.db.update_user(user1.id, :password => "abc12")
+      user = RPS.db.update_user(user1.name, :password => "abc12")
       expect(user.name).to eq("Ashley")
       expect(user.password).to eq("abc12")
-      expect(RPS.db.get_user(user1.id).password).to eq("abc12")
+      expect(RPS.db.get_user(user1.name).password).to eq("abc12")
+    end
+
+    it "removes a user" do
+      expect(RPS.db.remove_user(user1.name)).to eq([])
     end
   end
 
