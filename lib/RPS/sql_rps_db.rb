@@ -1,6 +1,7 @@
 class RPS::DB
-  def initialize
-    @db = SQLite3::Database.new "rps.db"
+  attr_writer :db
+  def initialize(filename)
+    @db = SQLite3::Database.new(filename)
     users = "create table if not exists users(id INTEGER, name TEXT, password TEXT, PRIMARY KEY(id));"
     games = "create table if not exists games(id integer, mid integer, p1_pick string, p2_pick string, win_id integer, PRIMARY KEY(id));"
     matches = "create table if not exists matches(id integer, p1_id integer, p2_id integer, win_id integer, PRIMARY KEY(id));"
@@ -47,6 +48,6 @@ end
 
 module RPS
   def self.db
-    @__db_instance ||= DB.new
+    @__db_instance ||= DB.new("rps.db")
   end
 end
