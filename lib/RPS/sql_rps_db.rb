@@ -78,6 +78,16 @@ class RPS::DB
     RPS::Matches.new(data[:id], data[:p1_id], data[:p2_id], data[:win_id])
   end
 
+  def list_matches
+    all_matches = []
+    matches = @db.execute("SELECT * FROM matches;")
+    matches.each do |match|
+      all_matches << build_match(:id => match[0], :p1_id => match[1], :p2_id => match[2], :win_id => match[3])
+    end
+
+    all_matches
+  end
+
   # Game CRUD methods
   def create_game(data)
     @db.execute("INSERT INTO games(mid) values('#{data[:mid]}');")

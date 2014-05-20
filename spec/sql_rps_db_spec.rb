@@ -97,6 +97,15 @@ describe 'db' do
     it 'should delete a match' do
       expect(db.remove_match(match.id)).to eq([])
     end
+
+    it "lists all matches" do
+      match
+      match2 = db.create_match({:p1_id => user2.id})
+      matches = db.list_matches
+      expect(matches[0].id).to eq(match.id)
+      expect(matches[1].id).to eq(match2.id)
+      expect(matches.size).to eq(2)
+    end
   end
 
   describe 'games' do
