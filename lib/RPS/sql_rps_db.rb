@@ -20,7 +20,7 @@ class RPS::DB
   end
 
   def get_user(name)
-    user = @db.execute("select * from users where name='#{name}';").flatten
+    user = @db.execute("select *, CAST(password AS TEXT) from users where name='#{name}';").flatten
     hash = {:id => user[0], :name => user[1], :password => user[2]}
     build_user(hash)
   end
@@ -38,7 +38,7 @@ class RPS::DB
 
   def list_users
     all_users = []
-    users = @db.execute("SELECT * FROM users;")
+    users = @db.execute("SELECT *, CAST(password AS TEXT) FROM users;")
     users.each do |user|
       all_users << build_user(:id => user[0], :name => user[1], :password => user[2])
     end
@@ -68,6 +68,10 @@ class RPS::DB
       @db.execute("update matches set '#{key}' = '#{value}' where id='#{id}';")
     end
     get_match(id)
+  end
+
+  def remove_match(id)
+    @db.execute("delete from matches where id='#{id}';")
   end
 
   def build_match(data)

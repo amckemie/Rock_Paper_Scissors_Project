@@ -9,7 +9,7 @@ describe 'db' do
 
     RPS::DB.new("test.db")
   end
-  let(:user1) {db.create_user(:name => "Ashley", :password => "abc")}
+  let(:user1) {db.create_user(:name => "Ashley", :password => "1234")}
   let(:user2) {db.create_user(:name => "Katrina", :password => "123kb")}
   let(:match) {db.create_match({:p1_id => user1.id})}
 
@@ -26,7 +26,7 @@ describe 'db' do
 
     it "creates a user with unique username and password" do
       expect(user1.name).to eq("Ashley")
-      expect(user1.password).to eq("abc")
+      expect(user1.password).to eq("1234")
       expect(user1.id).to be_a(Fixnum)
     end
 
@@ -34,7 +34,7 @@ describe 'db' do
       user = db.get_user(user1.name)
       expect(user).to be_a(RPS::Users)
       expect(user.name).to eq("Ashley")
-      expect(user.password).to eq("abc")
+      expect(user.password).to eq("1234")
       expect(user.id).to be_a(Fixnum)
     end
 
@@ -90,6 +90,10 @@ describe 'db' do
         result2 = db.update_match(match.id, win_id: user1.id)
         expect(result2.win_id).to eq(user1.id)
       end
+    end
+
+    it 'should delete a match' do
+      expect(db.remove_match(match.id)).to eq([])
     end
    end
 
