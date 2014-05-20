@@ -76,7 +76,22 @@ describe 'db' do
       match_id = match.id
       expect(db.get_match(match_id).id).to eq(match.id)
     end
-  end
+
+    describe '#update_match' do
+      it 'updates a match with given data' do
+        result = db.update_match(match.id, p2_id: 6)
+        expect(db.get_match(match.id).p2_id).to eq(6)
+      end
+
+      it 'returns a match object' do
+        result = db.update_match(match.id, p2_id: 6)
+        expect(result.p2_id).to eq(6)
+        expect(result.win_id).to eq(nil)
+        result2 = db.update_match(match.id, win_id: user1.id)
+        expect(result2.win_id).to eq(user1.id)
+      end
+    end
+   end
 
   # describe 'games' do
   # end

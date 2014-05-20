@@ -63,6 +63,13 @@ class RPS::DB
     build_match(hash)
   end
 
+  def update_match(id, data)
+    data.each do |key, value|
+      @db.execute("update matches set '#{key}' = '#{value}' where id='#{id}';")
+    end
+    get_match(id)
+  end
+
   def build_match(data)
     RPS::Matches.new(data[:id], data[:p1_id], data[:p2_id], data[:win_id])
   end
