@@ -112,6 +112,11 @@ describe 'db' do
         expect(game1.win_id).to eq(nil)
       end
     end
+
+    it "returns a game object given game id" do
+      game1_id = game1.id
+      expect(db.get_game(game1_id).id).to eq(game1.id)
+    end
   end
 
   # describe 'invites' do

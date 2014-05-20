@@ -84,6 +84,12 @@ class RPS::DB
     build_game(data)
   end
 
+  def get_game(id)
+    game = @db.execute("select * from games where id='#{id}';").flatten
+    hash = {:id => game[0], mid: game[1], p1_pick: game[2], p2_pick: game[3], win_id: game[4]}
+    build_game(hash)
+  end
+
   def build_game(data)
     RPS::Games.new(data[:id], data[:mid], data[:p1_pick], data[:p2_pick])
   end
