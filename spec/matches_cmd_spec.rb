@@ -28,9 +28,27 @@ describe 'matches_cmd' do
   end
 
   describe "list_active_matches" do
-    it "should return an array of all the matches as match objects" do
+    it "should return a hash with the match ids" do
+    end
+
+    it 'should return a hash with what game it is on' do
+    end
+
+    it 'should return a hash with whos turn it is and who the other player is.' do
     end
   end
 
-  describe ''
+  describe '#get_match_data' do
+    it 'should return an array of hashes with the game id' do
+    end
+
+    it 'should return an array of hashes with the current players choice' do
+    end
+
+    it 'should return an array of hashes with the other players choice and their name' do
+    end
+
+    it 'should return an array of hashes with who won the game' do
+    end
+  end
 end
