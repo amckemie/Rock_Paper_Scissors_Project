@@ -50,6 +50,17 @@ class RPS::DB
     RPS::Users.new(data[:id], data[:name], data[:password])
   end
 
+  # Matches CRUD methods
+  def create_match(data)
+    @db.execute("INSERT INTO matches(p1_id) values('#{data[:p1_id]}');")
+    data[:id] = @db.execute("select last_insert_rowid();").flatten.first
+    build_match(data)
+  end
+
+  def build_match(data)
+    RPS::Matches.new(data[:id], data[:p1_id], data[:p2_id], data[:win_id])
+  end
+
   # testing helper method
   def clear_table(table_name)
     @db.execute("delete from '#{table_name}';")

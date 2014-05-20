@@ -9,6 +9,8 @@ describe 'db' do
 
     RPS::DB.new("test.db")
   end
+  let(:user1) {db.create_user(:name => "Ashley", :password => "abc")}
+  let(:user2) {db.create_user(:name => "Katrina", :password => "123kb")}
 
   it "exists" do
     expect(DB).to be_a(Class)
@@ -20,8 +22,6 @@ describe 'db' do
 
   # testing users
   describe 'users' do
-
-    let(:user1) {db.create_user(:name => "Ashley", :password => "abc")}
 
     it "creates a user with unique username and password" do
       expect(user1.name).to eq("Ashley")
@@ -58,10 +58,23 @@ describe 'db' do
     end
   end
 
-  # describe 'games' do
-  # end
+  describe 'matches' do
+    describe "create_match" do
+      it "creates a match with unique id and win_id set to nil" do
+        match = db.create_match({:p1_id => user1.id})
+        expect(match.id).to be_a(Fixnum)
+        expect(match.p2_id).to eq(nil)
+        expect(match.win_id).to eq(nil)
+      end
 
-  # describe 'matches' do
+      it "takes in 1 player id and set it equal to p1_id" do
+        match = db.create_match({:p1_id => user1.id})
+        expect(match.p1_id).to eq(user1.id)
+      end
+    end
+  end
+
+  # describe 'games' do
   # end
 
   # describe 'invites' do
