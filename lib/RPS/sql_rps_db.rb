@@ -57,6 +57,12 @@ class RPS::DB
     build_match(data)
   end
 
+  def get_match(id)
+    match = @db.execute("select * from matches where id='#{id}';").flatten
+    hash = {:id => match[0], :p1_id => match[1], :p2_id => match[2], :win_id => match[3]}
+    build_match(hash)
+  end
+
   def build_match(data)
     RPS::Matches.new(data[:id], data[:p1_id], data[:p2_id], data[:win_id])
   end
