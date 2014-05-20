@@ -27,8 +27,10 @@ describe 'matches_cmd' do
     end
   end
 
-  # describe "list_active_matches" do
-  #   it "" do
-  #   end
-  # end
+  describe "list_active_matches" do
+    it "should return an array of all the matches as match objects" do
+    end
+  end
+
+  describe ''
 end
