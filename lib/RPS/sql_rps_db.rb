@@ -78,6 +78,16 @@ class RPS::DB
     RPS::Matches.new(data[:id], data[:p1_id], data[:p2_id], data[:win_id])
   end
 
+  def create_game(data)
+    @db.execute("INSERT INTO games(mid) values('#{data[:mid]}');")
+    data[:id] = @db.execute("select last_insert_rowid();").flatten.first
+    build_game(data)
+  end
+
+  def build_game(data)
+    RPS::Games.new(data[:id], data[:mid], data[:p1_pick], data[:p2_pick])
+  end
+
   # testing helper method
   def clear_table(table_name)
     @db.execute("delete from '#{table_name}';")

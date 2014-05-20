@@ -12,6 +12,7 @@ describe 'db' do
   let(:user1) {db.create_user(:name => "Ashley", :password => "1234")}
   let(:user2) {db.create_user(:name => "Katrina", :password => "123kb")}
   let(:match) {db.create_match({:p1_id => user1.id})}
+  let(:game1) {db.create_game({mid: match.id})}
 
   it "exists" do
     expect(DB).to be_a(Class)
@@ -79,7 +80,7 @@ describe 'db' do
 
     describe '#update_match' do
       it 'updates a match with given data' do
-        result = db.update_match(match.id, p2_id: 6)
+        db.update_match(match.id, p2_id: 6)
         expect(db.get_match(match.id).p2_id).to eq(6)
       end
 
@@ -95,10 +96,23 @@ describe 'db' do
     it 'should delete a match' do
       expect(db.remove_match(match.id)).to eq([])
     end
-   end
+  end
 
-  # describe 'games' do
-  # end
+  describe 'games' do
+
+    describe '#create_game' do
+      it 'should create a game with a match id and unique id' do
+        expect(game1.mid).to eq(match.id)
+        expect(game1.id).to be_a(Fixnum)
+      end
+
+      it 'should set p1_pick and p2_pick and win_id to nil' do
+        expect(game1.p1_pick).to eq(nil)
+        expect(game1.p2_pick).to eq(nil)
+        expect(game1.win_id).to eq(nil)
+      end
+    end
+  end
 
   # describe 'invites' do
   # end
