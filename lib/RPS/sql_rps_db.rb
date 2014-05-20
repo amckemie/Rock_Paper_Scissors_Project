@@ -36,6 +36,16 @@ class RPS::DB
     @db.execute("delete from users where name='#{name}';")
   end
 
+  def list_users
+    all_users = []
+    users = @db.execute("SELECT * FROM users;")
+    users.each do |user|
+      all_users << build_user(:id => user[0], :name => user[1], :password => user[2])
+    end
+
+    all_users
+  end
+
   def build_user(data)
     RPS::Users.new(data[:id], data[:name], data[:password])
   end

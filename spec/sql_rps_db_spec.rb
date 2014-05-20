@@ -47,6 +47,15 @@ describe 'db' do
     it "removes a user" do
       expect(db.remove_user(user1.name)).to eq([])
     end
+
+    it "lists all users" do
+      user1
+      katrina = db.create_user(:name => "Katrina", :password => "123kb")
+      users = db.list_users
+      expect(users[0].name).to eq("Ashley")
+      expect(users[1].name).to eq("Katrina")
+      expect(users.size).to eq(2)
+    end
   end
 
   # describe 'games' do
