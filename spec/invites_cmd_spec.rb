@@ -13,4 +13,9 @@ describe 'invites_cmd' do
     RPS.db.clear_table("matches")
     RPS.db.clear_table("users")
   end
+
+  describe '#create_invite' do
+    it 'should get the inviters id and give both ids to the create_invite method in the database' do
+    end
+  end
 end
