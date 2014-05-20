@@ -106,6 +106,27 @@ class RPS::DB
     RPS::Games.new(data[:id], data[:mid], data[:p1_pick], data[:p2_pick], data[:win_id])
   end
 
+  # Invite CRUD methods
+  def create_invite(data)
+    @db.execute("INSERT INTO invites(invitee, inviter) values('#{data[:inviter]}', '#{data[:invitee]}');")
+    data[:id] = @db.execute("select last_insert_rowid();").flatten.first
+    build_invite(data)
+  end
+
+  def get_invite(id)
+    invite = @db.execute("select * from invites where id='#{id}';").flatten
+    hash = {:id => invite[0], mid: invite[1], p1_pick: invite[2], p2_pick: invite[3], win_id: invite[4]}
+    build_invite(hash)
+  end
+
+  def remove_invite(id)
+    @db.execute("delete from invites where id='#{id}';")
+  end
+
+  def build_invite(data)
+    RPS::Invites.new(data[:id], data[:inviter], data[:invitee])
+  end
+
   # testing helper method
   def clear_table(table_name)
     @db.execute("delete from '#{table_name}';")

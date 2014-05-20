@@ -13,6 +13,7 @@ describe 'db' do
   let(:user2) {db.create_user(:name => "Katrina", :password => "123kb")}
   let(:match) {db.create_match({:p1_id => user1.id})}
   let(:game1) {db.create_game({mid: match.id})}
+  let(:invite1) {db.create_invite({inviter: user1.id, invitee: user2.id})}
 
   it "exists" do
     expect(DB).to be_a(Class)
@@ -138,6 +139,21 @@ describe 'db' do
     end
   end
 
-  # describe 'invites' do
-  # end
+  describe 'invites' do
+
+    it 'should create a invite with a invitee id, inviter id, and unique id' do
+      expect(invite1.inviter).to eq(user1.id)
+      expect(invite1.invitee).to eq(user2.id)
+      expect(invite1.id).to be_a(Fixnum)
+    end
+
+    it "returns a invite object given invite id" do
+      invite1_id = invite1.id
+      expect(db.get_invite(invite1_id).id).to eq(invite1.id)
+    end
+
+    it 'should delete an invite' do
+      expect(db.remove_invite(invite1.id)).to eq([])
+    end
+  end
 end
