@@ -98,6 +98,10 @@ class RPS::DB
     get_game(id)
   end
 
+  def remove_game(id)
+    @db.execute("delete from games where id='#{id}';")
+  end
+
   def build_game(data)
     RPS::Games.new(data[:id], data[:mid], data[:p1_pick], data[:p2_pick], data[:win_id])
   end

@@ -132,6 +132,10 @@ describe 'db' do
         expect(result2.win_id).to eq(user1.id)
       end
     end
+
+    it 'should delete a game' do
+      expect(db.remove_game(game1.id)).to eq([])
+    end
   end
 
   # describe 'invites' do
