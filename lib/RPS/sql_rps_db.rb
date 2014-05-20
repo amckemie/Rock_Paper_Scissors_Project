@@ -78,6 +78,7 @@ class RPS::DB
     RPS::Matches.new(data[:id], data[:p1_id], data[:p2_id], data[:win_id])
   end
 
+  # Game CRUD methods
   def create_game(data)
     @db.execute("INSERT INTO games(mid) values('#{data[:mid]}');")
     data[:id] = @db.execute("select last_insert_rowid();").flatten.first
@@ -90,8 +91,15 @@ class RPS::DB
     build_game(hash)
   end
 
+  def update_game(id, data)
+    data.each do |key, value|
+      @db.execute("update games set '#{key}' = '#{value}' where id='#{id}';")
+    end
+    get_game(id)
+  end
+
   def build_game(data)
-    RPS::Games.new(data[:id], data[:mid], data[:p1_pick], data[:p2_pick])
+    RPS::Games.new(data[:id], data[:mid], data[:p1_pick], data[:p2_pick], data[:win_id])
   end
 
   # testing helper method

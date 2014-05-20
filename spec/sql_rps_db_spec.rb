@@ -117,6 +117,21 @@ describe 'db' do
       game1_id = game1.id
       expect(db.get_game(game1_id).id).to eq(game1.id)
     end
+
+    describe '#update_game' do
+      it 'updates a game with given data' do
+        db.update_game(game1.id, p1_pick: "rock")
+        expect(db.get_game(game1.id).p1_pick).to eq("rock")
+      end
+
+      it 'returns a game object' do
+        result = db.update_game(game1.id, p2_pick: "paper")
+        expect(result.p2_pick).to eq("paper")
+        expect(result.win_id).to eq(nil)
+        result2 = db.update_game(game1.id, win_id: user1.id)
+        expect(result2.win_id).to eq(user1.id)
+      end
+    end
   end
 
   # describe 'invites' do
