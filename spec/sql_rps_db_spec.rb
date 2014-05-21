@@ -150,7 +150,7 @@ describe 'db' do
 
   describe 'invites' do
 
-    it 'should create a invite with a invitee id, inviter id, and unique id' do
+    it 'should create a invite with a inviter id, invitee id, and unique id' do
       expect(invite1.inviter).to eq(user1.id)
       expect(invite1.invitee).to eq(user2.id)
       expect(invite1.id).to be_a(Fixnum)

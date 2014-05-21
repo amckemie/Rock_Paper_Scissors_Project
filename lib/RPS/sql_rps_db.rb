@@ -118,7 +118,7 @@ class RPS::DB
 
   # Invite CRUD methods
   def create_invite(data)
-    @db.execute("INSERT INTO invites(invitee, inviter) values('#{data[:inviter]}', '#{data[:invitee]}');")
+    @db.execute("INSERT INTO invites(inviter, invitee) values('#{data[:inviter]}', '#{data[:invitee]}');")
     data[:id] = @db.execute("select last_insert_rowid();").flatten.first
     build_invite(data)
   end
