@@ -46,4 +46,31 @@ describe 'invites_cmd' do
       expect(result[:error]).to eq("That user doesn't exist.")
     end
   end
+
+  describe 'accept_invite' do
+
+    let(:invite_response) {@cd.accept_invite(invite_result[:invite].id, invite_result[:invite].inviter, true)}
+    let(:invite2) {@cd.create_invite(user2.name, user1.name)}
+
+    it "creates a match between the inviter and invitee if accepted" do
+      expect(invite_response[:match]).to be_a(RPS::Matches)
+    end
+
+    it "doesn't create a match between the inviter and invitee if not accepted" do
+      result = @cd.accept_invite(invite2[:invite].id, 3, false)
+      expect(result[:success?]).to eq(true)
+      expect(result[:match]).to eq(nil)
+    end
+
+    it "deletes the invite once the invitee sends their response" do
+      invites = RPS.db.list_invites
+      expect(invites.size).to eq(0)
+    end
+
+    it "returns an error if the invite does not exist" do
+      result = @cd.accept_invite(5, 5, true)
+      # binding.pry
+      expect(result[:error]).to eq("That invite doesn't exist.")
+    end
+  end
 end

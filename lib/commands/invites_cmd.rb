@@ -31,4 +31,24 @@ class RPS::InvitesCmd
       return {success?: false, error: "That user doesn't exist."}
     end
   end
+
+  def accept_invite(id, p1_id, response)
+    invite = RPS.db.get_invite(id)
+    if invite.inviter != nil && response == true
+      RPS.db.remove_invite(id)
+      match = RPS.db.create_match(p1_id: p1_id)
+      return {
+        success?: true,
+        match: match
+      }
+    elsif invite.inviter != nil && response == false
+      RPS.db.remove_invite(id)
+      return {
+        success?: true,
+        match: nil
+      }
+    else
+      return {success?: false, error: "That invite doesn't exist."}
+    end
+  end
 end
