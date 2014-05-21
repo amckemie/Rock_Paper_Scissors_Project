@@ -111,9 +111,9 @@ class RPS::DB
     @db.execute("delete from games where id='#{id}';")
   end
 
-  def list_games(mid)
+  def list_games
     all_games = []
-    games = @db.execute("SELECT * FROM games WHERE mid = mid;")
+    games = @db.execute("SELECT * FROM games;")
     games.each do |game|
       all_games << build_game({:id => game[0], mid: game[1], p1_pick: game[2], p2_pick: game[3], win_id: game[4]})
     end

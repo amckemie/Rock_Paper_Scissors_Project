@@ -22,22 +22,22 @@ describe 'matches_cmd' do
 
 
   describe "get_active_matches" do
-    it "returns the number of active matches a user has" do
+    it "returns an array of active matches a user has" do
       match
       match2
       update
-      expect(@cd.get_active_matches(user1.id)).to eq(1)
-      expect(@cd.get_active_matches(user2.id)).to eq(2)
+      expect(@cd.active_matches(user1.id)[:matches].length).to eq(1)
+      expect(@cd.active_matches(user2.id)[:matches].length).to eq(2)
     end
   end
 
-  describe "list_active_matches" do
-    it 'should return an array of match objects' do
-      match
-      match2
-      update
-      array = @cd.list_active_matches(user2.id)
-      expect(array.length).to eq(2)
+  describe "make_move" do
+    it 'should update the game with the players move' do
+
+    end
+
+    it 'should check to see if there is a winner' do
+
     end
   end
 end
