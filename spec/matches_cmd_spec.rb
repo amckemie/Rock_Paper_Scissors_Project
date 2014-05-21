@@ -30,14 +30,4 @@ describe 'matches_cmd' do
       expect(@cd.active_matches(user2.id)[:matches].length).to eq(2)
     end
   end
-
-  describe "make_move" do
-    it 'should update the game with the players move' do
-
-    end
-
-    it 'should check to see if there is a winner' do
-
-    end
-  end
 end
