@@ -23,7 +23,7 @@ class RPS::GamesCmd
       else
         finished_game = RPS.db.update_game(game[0].id, p2_pick: move)
         result =  decide_winner(finished_game)
-        RPS.db.update_game(game[0].id, win_id: result[:winner])
+        RPS.db.update_game(finished_game.id, win_id: result[:winner])
         return result
       end
     end
@@ -33,7 +33,7 @@ class RPS::GamesCmd
     p1 = finished_game.p1_pick.downcase
     p2 = finished_game.p2_pick.downcase
     if p1 == p2
-      return {success?: false, error: "It's a tie."}
+      return {success?: false, error: "It's a tie.", winner: 0}
     elsif p1 == "rock" && p2 == 'scissors'
       return {success?: true, winner: 1}
     elsif p1 == "paper" && p2 == 'rock'
