@@ -125,7 +125,7 @@ class RPS::DB
 
   def get_invite(id)
     invite = @db.execute("select * from invites where id='#{id}';").flatten
-    hash = {:id => invite[0], mid: invite[1], p1_pick: invite[2], p2_pick: invite[3], win_id: invite[4]}
+    hash = {:id => invite[0], inviter: invite[1], invitee: invite[2]}
     build_invite(hash)
   end
 
