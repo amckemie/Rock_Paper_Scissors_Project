@@ -82,9 +82,8 @@ class RPS::DB
     all_matches = []
     matches = @db.execute("SELECT * FROM matches;")
     matches.each do |match|
-      all_matches << build_match(:id => match[0], :p1_id => match[1], :p2_id => match[2], :win_id => match[3])
+      all_matches << build_match({:id => match[0], :p1_id => match[1], :p2_id => match[2], :win_id => match[3]})
     end
-
     all_matches
   end
 
@@ -110,6 +109,15 @@ class RPS::DB
 
   def remove_game(id)
     @db.execute("delete from games where id='#{id}';")
+  end
+
+  def list_games(mid)
+    all_games = []
+    games = @db.execute("SELECT * FROM games WHERE mid = mid;")
+    games.each do |game|
+      all_games << build_game({:id => game[0], mid: game[1], p1_pick: game[2], p2_pick: game[3], win_id: game[4]})
+    end
+    all_games
   end
 
   def build_game(data)
