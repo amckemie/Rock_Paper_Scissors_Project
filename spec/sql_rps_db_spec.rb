@@ -150,7 +150,7 @@ describe 'db' do
 
   describe 'invites' do
 
-    it 'should create a invite with a invitee id, inviter id, and unique id' do
+    it 'should create a invite with a inviter id, invitee id, and unique id' do
       expect(invite1.inviter).to eq(user1.id)
       expect(invite1.invitee).to eq(user2.id)
       expect(invite1.id).to be_a(Fixnum)
@@ -163,6 +163,17 @@ describe 'db' do
 
     it 'should delete an invite' do
       expect(db.remove_invite(invite1.id)).to eq([])
+    end
+
+    describe "list all invites" do
+      it "returns an array of all invites" do
+        invite1
+        invite2 = db.create_invite(inviter: user2.id, invitee: user1.id)
+        invites = db.list_invites
+        expect(invites[0].id).to eq(invite1.id)
+        expect(invites[1].id).to eq(invite2.id)
+        expect(invites.size).to eq(2)
+      end
     end
   end
 end

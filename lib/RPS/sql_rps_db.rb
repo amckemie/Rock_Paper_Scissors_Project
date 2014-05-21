@@ -126,15 +126,25 @@ class RPS::DB
 
   # Invite CRUD methods
   def create_invite(data)
-    @db.execute("INSERT INTO invites(invitee, inviter) values('#{data[:inviter]}', '#{data[:invitee]}');")
+    @db.execute("INSERT INTO invites(inviter, invitee) values('#{data[:inviter]}', '#{data[:invitee]}');")
     data[:id] = @db.execute("select last_insert_rowid();").flatten.first
     build_invite(data)
   end
 
   def get_invite(id)
     invite = @db.execute("select * from invites where id='#{id}';").flatten
-    hash = {:id => invite[0], mid: invite[1], p1_pick: invite[2], p2_pick: invite[3], win_id: invite[4]}
+    hash = {:id => invite[0], inviter: invite[1], invitee: invite[2]}
     build_invite(hash)
+  end
+
+  def list_invites
+    all_invites = []
+    invites = @db.execute("SELECT * FROM invites;")
+    invites.each do |invite|
+      all_invites << build_invite(:id => invite[0], :inviter => invite[1], :invitee => invite[2])
+    end
+
+    all_invites
   end
 
   def remove_invite(id)
