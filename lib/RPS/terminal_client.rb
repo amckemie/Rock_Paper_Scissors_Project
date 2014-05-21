@@ -1,18 +1,18 @@
 class RPS::TerminalClient
-  def self.run
+  def initialize
+    user_log_in
+  end
+
+  def get_input
+    puts "Please enter your choice or exit if you wish to leave."
+    gets.chomp.downcase
+  end
+
+  def user_log_in
     puts "Welcome to Rock Paper Scissors!"
     puts "[1] Sign in"
     puts "[2] Sign up"
     answer = get_input
-    user_log_in(answer)
-  end
-
-  def get_input
-    puts "Please enter your choice or exit if you wish to stop."
-    input = gets.chomp.downcase
-  end
-
-  def user_log_in(answer)
     if answer == "1"
       puts "Please enter your username"
       name = gets.chomp
@@ -40,14 +40,49 @@ class RPS::TerminalClient
       end
     else
       puts "Sorry, that is not an option."
-      self.run
+      user_log_in
     end
   end
 
   def welcome_menu(name)
     user = RPS.db.get_user(name)
     puts "Welcome '#{user.name}'!"
-    active_matches = RPS::MatchesCmd.active_matches(user.id)
+    active_matches = RPS.db.list_active_matches(user.id)
     puts "You have '#{active_matches[:matches].length}' active matches."
+    list_menu
+    input = get_input
+    run(input)
+  end
+
+  def list_menu
+    puts "[1] users list - List all users
+          [2] match list - List active matches
+          [3] match play MID - Start playing game with id=MID
+          [4] invites - List all pending invites
+          [5] invite accept IID - Accept invite with id=IID
+          [6] invite create USERNAME - Invite user with username=USERNAME to play a game
+          [7] exit  - Leave Rock Paper Scissors"
+  end
+
+  def run(input)
+    case input
+      # lists all users
+    when "1"
+      display_users
+      get_input
+    when "7"
+      puts "Goodbye!"
+    else
+      puts "That is not a valid option."
+      get_input
+    end
+  end
+
+  def display_users
+    users = RPS.db.list_users
+    puts "| NAME\t | ID |"
+    users.each do |user|
+      puts "'#{user.name}'\t'#{user.id}'"
+    end
   end
 end
