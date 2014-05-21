@@ -18,25 +18,25 @@ class RPS::TerminalClient
       name = gets.chomp
       puts "Please enter your password"
       pw = gets.chomp
-      result = RPS::UsersCmd.sign_in(name, pw)
-      if !result[:success?]
+      result = RPS::UsersCmd.new.sign_in(name, pw)
+      if result[:success?] == false
         puts "#{result[:error]}"
-        self.run
+        user_log_in
       else
-        # welcome menu method
+        welcome_menu(name)
       end
     elsif answer == "2"
       puts "Please enter the username you would like to use:"
       name = gets.chomp
       puts "Please enter your password, using at least one character (ex: a, b, c, etc)"
       pw = gets.chomp
-      result = RPS::UsersCmd.sign_up(name, pw)
+      result = RPS::UsersCmd.new.sign_up(name, pw)
       if !result[:success?]
         puts "#{result[:error]}"
-        user_log_in(2)
+        user_log_in
       else
         puts "Thank you for creating an account."
-        # welcome menu
+        welcome_menu(name)
       end
     else
       puts "Sorry, that is not an option."
@@ -48,14 +48,15 @@ class RPS::TerminalClient
     user = RPS.db.get_user(name)
     puts "Welcome '#{user.name}'!"
     active_matches = RPS.db.list_active_matches(user.id)
-    puts "You have '#{active_matches[:matches].length}' active matches."
+    puts "You have '#{active_matches.length}' active matches."
     list_menu
     input = get_input
     run(input)
   end
 
   def list_menu
-    puts "[1] users list - List all users
+    puts "Available Options:
+          [1] users list - List all users
           [2] match list - List active matches
           [3] match play MID - Start playing game with id=MID
           [4] invites - List all pending invites

@@ -13,3 +13,4 @@ require_relative './commands/users_cmd.rb'
 require_relative './commands/matches_cmd.rb'
 require_relative './commands/invites_cmd.rb'
 require_relative './commands/games_cmd.rb'
+RPS::TerminalClient.new
