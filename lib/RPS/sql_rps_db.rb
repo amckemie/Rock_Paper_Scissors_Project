@@ -129,6 +129,16 @@ class RPS::DB
     build_invite(hash)
   end
 
+  def list_invites
+    all_invites = []
+    invites = @db.execute("SELECT * FROM invites;")
+    invites.each do |invite|
+      all_invites << build_invite(:id => invite[0], :inviter => invite[1], :invitee => invite[2])
+    end
+
+    all_invites
+  end
+
   def remove_invite(id)
     @db.execute("delete from invites where id='#{id}';")
   end
