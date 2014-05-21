@@ -11,7 +11,9 @@ describe 'games_cmd' do
   let(:match2) {RPS.db.create_match({:p1_id => user2.id})}
   let(:game1) {RPS.db.create_game({mid: match.id})}
   let(:game2) {RPS.db.create_game({mid: match.id})}
+  let(:game3) {RPS.db.create_game({mid: match2.id})}
   let(:update) {RPS.db.update_match(match.id, p2_id: user2.id)}
+  let(:update2) {RPS.db.update_match(match2.id, p2_id: user1.id)}
 
   before(:each) do
     @cd = RPS::GamesCmd.new
@@ -33,15 +35,26 @@ describe 'games_cmd' do
       user1
       user2
       match
+      match2
       update
       game1
+      game3
+      # Check if it returns the correct winner
       move1 = @cd.make_move(match.id,user1.id,"Rock")
       expect(RPS.db.get_game(game1.id).p1_pick).to eq("Rock")
       expect(move1[:winner]).to eq(nil)
       move2 = @cd.make_move(match.id,user2.id,"Paper")
       expect(RPS.db.get_game(game1.id).p2_pick).to eq("Paper")
-      expect(move1[:winner]).to eq(2)
+      expect(move2[:winner]).to eq(2)
       expect(RPS.db.get_game(game1.id).win_id).to eq(2)
+      # Check if it sets the win_id as 0 if it's a tie
+      move1 = @cd.make_move(match2.id,user2.id,"Rock")
+      expect(RPS.db.get_game(game3.id).p1_pick).to eq("Rock")
+      expect(move1[:winner]).to eq(nil)
+      move2 = @cd.make_move(match2.id,user1.id,"Rock")
+      expect(RPS.db.get_game(game3.id).p2_pick).to eq("Rock")
+      expect(move2[:winner]).to eq(0)
+      expect(RPS.db.get_game(game3.id).win_id).to eq(0)
     end
   end
 end

@@ -19,15 +19,4 @@ describe 'matches_cmd' do
     RPS.db.clear_table("matches")
     RPS.db.clear_table("users")
   end
-
-
-  describe "get_active_matches" do
-    it "returns an array of active matches a user has" do
-      match
-      match2
-      update
-      expect(@cd.active_matches(user1.id)[:matches].length).to eq(1)
-      expect(@cd.active_matches(user2.id)[:matches].length).to eq(2)
-    end
-  end
 end
