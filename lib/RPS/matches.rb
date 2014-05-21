@@ -6,6 +6,4 @@ class RPS::Matches
     @p2_id = p2_id
     @win_id = win_id
   end
-
-  # set_winner method
 end
