@@ -11,19 +11,18 @@ class RPS::GamesCmd
   end
 
   def make_move(mid, pid, move)
-    games = RPS.cmd.list_games(mid)
+    games = list_games(mid)
     if games[:success?] == false
       return games
     else
       game = games[:games].select {|game| game.win_id == nil}
       match = RPS.db.get_match(mid)
-        binding.pry
       if match.p1_id == pid
         RPS.db.update_game(game[0].id, p1_pick: move)
         return {success?: true, winner: nil}
       else
         finished_game = RPS.db.update_game(game[0].id, p2_pick: move)
-        result =  RPS.cmd.decide_winner(finished_game)
+        result =  decide_winner(finished_game)
         RPS.db.update_game(game[0].id, win_id: result[:winner])
         return result
       end
@@ -44,11 +43,5 @@ class RPS::GamesCmd
     else
       return {success?: true, winner: 2}
     end
-  end
-end
-
-module RPS
-  def self.cmd
-    @__cmd_instance ||= GamesCmd.new
   end
 end
